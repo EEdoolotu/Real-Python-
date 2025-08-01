@@ -1,0 +1,46 @@
+# 🛂 Access Control Scanner Challenge
+
+# 1. Create a set of revoked badge numbers
+revoked_badges = {
+    "A1023",
+    "B2345",
+    "C5432",
+    "D8765",
+    "E9999",
+    "F1234",
+    "G6789",
+    "H4321",
+    "J1111",
+    "K2222"
+}
+
+# 2. Create two empty lists: "approved" and "denied"
+approved = []
+denied = []
+
+# 3. Start a loop to collect visitor info
+while True:
+    name = input('What is your name? (or type "done" to finish): ')
+    if name.lower() == 'done':
+        break
+
+    badge_no = input('What is your badge number?: ')
+    if badge_no in revoked_badges:
+        denied.append((name, badge_no))
+        print('⛔ ACCESS DENIED')
+    else:
+        approved.append((name, badge_no))
+        print('✅ ACCESS GRANTED')
+
+# 4. Print the final Access Summary
+print('\n===== Access Summary =====')
+approved.sort()
+denied.sort()
+
+print(f'\n✅ Approved Visitors ({len(approved)}):')
+for visitor in approved:
+    print(f'- {visitor[0]} ({visitor[1]})')
+
+print(f'\n⛔ Denied Visitors ({len(denied)}):')
+for visitor in denied:
+    print(f'- {visitor[0]} ({visitor[1]})')
