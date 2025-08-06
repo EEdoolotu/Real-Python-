@@ -1,0 +1,31 @@
+import time
+
+def countdown(minutes):
+    seconds = minutes * 60
+    while seconds:
+        mins, secs = divmod(seconds, 60)
+        print(f"\r⏳ {mins:02d}:{secs:02d}", end="")
+        time.sleep(1)
+        seconds -= 1
+    print("\n🔔 Time's up!")
+
+def pomodoro(work=25, rest=5, cycles=4):
+    for i in range(cycles):
+        print(f"\n🔨 Work Session {i + 1}")
+        countdown(work)
+        print("\n🌿 Break Time")
+        countdown(rest)
+    print("\n✅ All sessions complete! Great job!")
+
+def main():
+    print("🍅 Welcome to Focus Timer (Pomodoro Style)")
+    try:
+        work = int(input("Enter work duration in minutes (default 25): ") or 25)
+        rest = int(input("Enter break duration in minutes (default 5): ") or 5)
+        cycles = int(input("How many Pomodoro cycles? (default 4): ") or 4)
+        pomodoro(work, rest, cycles)
+    except KeyboardInterrupt:
+        print("\nSession ended early. See you next time!")
+
+if __name__ == "__main__":
+    main()
