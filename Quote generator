@@ -1,0 +1,26 @@
+import requests
+
+def get_quote():
+    url = "https://api.quotable.io/random"
+    response = requests.get(url)
+
+    if response.status_code != 200:
+        print("⚠️ Could not fetch quote. Try again later.")
+        return
+
+    data = response.json()
+    quote = data.get("content")
+    author = data.get("author")
+    print(f"\n💡 {quote} — {author}")
+
+def main():
+    print("✨ Welcome to Quote Generator ✨")
+    while True:
+        get_quote()
+        again = input("\nPress Enter for another quote or type 'q' to quit: ").strip().lower()
+        if again == 'q':
+            print("\nGoodbye! Stay inspired. 🚀")
+            break
+
+if __name__ == "__main__":
+    main()
