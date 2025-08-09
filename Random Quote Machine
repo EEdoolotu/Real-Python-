@@ -1,0 +1,44 @@
+import random
+import requests
+
+# Offline quotes
+quotes = [
+    "Discipline equals freedom. – Jocko Willink",
+    "Do what you can, with what you have, where you are. – Theodore Roosevelt",
+    "Success is not final, failure is not fatal: It is the courage to continue that counts. – Winston Churchill",
+    "It always seems impossible until it's done. – Nelson Mandela",
+    "Fall seven times and stand up eight. – Japanese Proverb"
+]
+
+def get_online_quote():
+    try:
+        response = requests.get("https://type.fit/api/quotes", timeout=5)
+        if response.status_code == 200:
+            all_quotes = response.json()
+            return random.choice(all_quotes)['text']
+        else:
+            return None
+    except:
+        return None
+
+def main():
+    print("💬 Welcome to the Random Quote Machine")
+    while True:
+        choice = input("Get [O]nline quote, [L]ocal quote, or [Q]uit? ").lower()
+        
+        if choice == 'q':
+            print("Goodbye! Stay inspired.")
+            break
+        elif choice == 'o':
+            quote = get_online_quote()
+            if quote:
+                print(f"\n🌟 {quote}\n")
+            else:
+                print("⚠️ Could not fetch online quotes. Try local mode.")
+        elif choice == 'l':
+            print(f"\n✨ {random.choice(quotes)}\n")
+        else:
+            print("❓ Invalid choice. Please type O, L, or Q.")
+
+if __name__ == "__main__":
+    main()
