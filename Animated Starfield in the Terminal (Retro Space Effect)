@@ -1,0 +1,46 @@
+import os
+import random
+import time
+
+# Terminal size
+WIDTH = 80
+HEIGHT = 20
+NUM_STARS = 50
+
+# Generate initial star positions
+stars = [[random.randint(0, WIDTH-1), random.randint(0, HEIGHT-1)] for _ in range(NUM_STARS)]
+
+def draw():
+    os.system('cls' if os.name == 'nt' else 'clear')  # Clear screen
+    # Create empty space
+    screen = [[" " for _ in range(WIDTH)] for _ in range(HEIGHT)]
+    
+    # Place stars
+    for x, y in stars:
+        if 0 <= y < HEIGHT and 0 <= x < WIDTH:
+            screen[y][x] = "*"
+    
+    # Print the screen
+    for row in screen:
+        print("".join(row))
+
+def update():
+    for star in stars:
+        star[1] += 1  # Move down
+        if star[1] >= HEIGHT:  # If off screen, respawn at top
+            star[0] = random.randint(0, WIDTH-1)
+            star[1] = 0
+
+def main():
+    print("🌌 ASCII Starfield – Press Ctrl+C to exit")
+    time.sleep(1)
+    try:
+        while True:
+            draw()
+            update()
+            time.sleep(0.05)  # Frame delay
+    except KeyboardInterrupt:
+        print("\n🚀 Starfield stopped.")
+
+if __name__ == "__main__":
+    main()
