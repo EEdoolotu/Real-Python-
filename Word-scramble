@@ -1,0 +1,36 @@
+import random
+
+# List of words
+words = ["python", "developer", "github", "programming", "keyboard", "algorithm", "function", "variable"]
+
+def scramble(word):
+    word_letters = list(word)
+    random.shuffle(word_letters)
+    return "".join(word_letters)
+
+def play():
+    score = 0
+    print("🔤 Welcome to the Word Scramble Game!")
+    print("Unscramble the letters to form a word. Type 'quit' to exit.\n")
+
+    while True:
+        word = random.choice(words)
+        scrambled = scramble(word)
+        print(f"Scrambled word: {scrambled}")
+
+        guess = input("Your guess: ").lower()
+        if guess == "quit":
+            break
+        elif guess == word:
+            print("✅ Correct!")
+            score += 1
+        else:
+            print(f"❌ Wrong! The word was: {word}")
+
+        print(f"Current score: {score}\n")
+
+    print(f"🏆 Final score: {score}")
+    print("Thanks for playing!")
+
+if __name__ == "__main__":
+    play()
