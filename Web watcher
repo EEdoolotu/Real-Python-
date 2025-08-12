@@ -1,0 +1,54 @@
+import requests
+from bs4 import BeautifulSoup
+import time
+import hashlib
+import os
+
+URL = "https://example.com"  # Change this to the page you want to track
+CHECK_INTERVAL = 60 * 5  # Check every 5 minutes
+HASH_FILE = "last_hash.txt"
+
+def fetch_page(url):
+    try:
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
+        return response.text
+    except requests.RequestException as e:
+        print(f"⚠️ Error fetching {url}: {e}")
+        return None
+
+def hash_content(content):
+    return hashlib.sha256(content.encode('utf-8')).hexdigest()
+
+def read_last_hash():
+    if os.path.exists(HASH_FILE):
+        with open(HASH_FILE, 'r') as f:
+            return f.read().strip()
+    return None
+
+def save_hash(hash_value):
+    with open(HASH_FILE, 'w') as f:
+        f.write(hash_value)
+
+def main():
+    print(f"🕵️ WebWatcher started. Monitoring {URL} every {CHECK_INTERVAL} seconds.")
+    while True:
+        content = fetch_page(URL)
+        if content:
+            # Optional: parse & extract only a section
+            soup = BeautifulSoup(content, 'html.parser')
+            body_text = soup.get_text(strip=True)  # Raw text from page
+            
+            current_hash = hash_content(body_text)
+            last_hash = read_last_hash()
+            
+            if last_hash and current_hash != last_hash:
+                print("⚡ Change detected! The page content has been updated.")
+                # Future expansion: send email/Discord alert here
+            
+            save_hash(current_hash)
+        
+        time.sleep(CHECK_INTERVAL)
+
+if __name__ == "__main__":
+    main()
